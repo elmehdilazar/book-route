@@ -8,7 +8,8 @@
           <label for="" class="form-label">Ref</label>
           <input
             type="text"
-            name="re"
+            name="ref"
+            disabled
             v-model="state.book.ref"
             :class="
               state.book.ref.length ? state.successClass : state.errorClass
@@ -80,10 +81,10 @@ export default {
     });
     function submit($event) {
       $event.preventDefault();
-      let books = JSON.parse(localStorage.getItem("books")) || [];
-      books.push(state.book);
-      console.log(books);
-      localStorage.setItem("books", JSON.stringify(books));
+        let books = JSON.parse(localStorage.getItem("books"));
+        let UpdateBook = books.filter((item) => item.ref !== state.book.ref);
+        UpdateBook.push(state.book);
+      localStorage.setItem("books", JSON.stringify(UpdateBook));
       state.book = {
         ref: "",
         title: "",
