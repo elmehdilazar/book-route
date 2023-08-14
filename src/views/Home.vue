@@ -45,21 +45,20 @@
   </div>
 </template>
 <script>
-import { onMounted, reactive } from "vue";
+import { computed, onMounted, reactive } from "vue";
+import { useStore } from 'vuex';
 export default {
   name: "home",
   setup() {
+    const store = useStore();
     const state = reactive({
-      books: [],
+      books: computed(()=>store.state.books.books),
     });
     function getBooks() {
-      state.books = JSON.parse(localStorage.getItem("books"));
+    store.dispatch("books/getBooks")
     }
     function removeBook(book) {
-      const books = JSON.parse(localStorage.getItem("books"));
-      const UpdateBook = books.filter((item) => item.ref !== book.ref);
-      localStorage.setItem("books", JSON.stringify(UpdateBook));
-     window.location.reload();
+      store.commit("books/removeBook", book);
     }
     onMounted(() => {
       getBooks();

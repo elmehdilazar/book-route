@@ -51,10 +51,12 @@
 <script>
 import { reactive } from 'vue';
 import { useRouter } from 'vue-router';
+import { useStore } from 'vuex';
 
 export default {
     name:"addook",
-    setup(props) {
+    setup() {
+        const store = useStore();
         const router = useRouter();
         const state = reactive({
             book: {
@@ -67,10 +69,7 @@ export default {
         });
         function submit($event) {
              $event.preventDefault();
-            let books = JSON.parse(localStorage.getItem("books")) || [];
-            books.push(state.book);
-            console.log(books);
-            localStorage.setItem('books', JSON.stringify(books));
+            store.commit("books/addBook",state.book);
             state.book = {
                 ref: '',
                 title: '',
